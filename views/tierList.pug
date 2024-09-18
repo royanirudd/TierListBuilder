@@ -167,12 +167,13 @@ html(lang="en")
       function addItemToTier(name, imageSrc) {
         const item = document.createElement('div');
         item.className = 'tier-item';
+        item.id = 'item-' + Date.now(); // Assign a unique id
         item.style.backgroundImage = `url(${imageSrc})`;
         item.title = name;
         item.draggable = true;
         item.ondragstart = drag;
 
-        // Add to the S tier by default (you can modify this as needed)
+        // Add to the S tier by default
         document.getElementById('tier-S').appendChild(item);
         modal.style.display = "none";
       }
@@ -190,12 +191,18 @@ html(lang="en")
         ev.preventDefault();
         const data = ev.dataTransfer.getData("text");
         const draggedElement = document.getElementById(data);
-        if (draggedElement) {
-          ev.target.closest('.tier-items').appendChild(draggedElement);
-        } else {
-          ev.target.closest('.tier-items').appendChild(ev.target);
+        
+        // Check if we're dropping onto a tier-items div or an item within it
+        const targetTier = ev.target.closest('.tier-items');
+        
+        if (draggedElement && targetTier) {
+          targetTier.appendChild(draggedElement);
         }
-        ev.target.closest('.tier-items').classList.remove('drag-over');
+        
+        // Remove the drag-over class
+        document.querySelectorAll('.tier-items').forEach(tier => {
+          tier.classList.remove('drag-over');
+        });
       }
 
       document.querySelectorAll('.tier-items').forEach(tierItems => {
@@ -214,3 +221,4 @@ html(lang="en")
         console.log('Export clicked');
         // Implement export functionality later
       });
+
