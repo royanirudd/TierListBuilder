@@ -1,0 +1,66 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title= title
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      .container {
+        text-align: center;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #333;
+      }
+      .login-options {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .login-button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s;
+        width: 100%;
+      }
+      .github {
+        background-color: #24292e;
+        color: white;
+      }
+      .google {
+        background-color: #4285F4;
+        color: white;
+      }
+      .guest {
+        background-color: #34a853;
+        color: white;
+      }
+      .login-button:hover {
+        opacity: 0.9;
+      }
+  body
+    .container
+      h1= title
+      .login-options
+        form(action="/login/github", method="post")
+          button.login-button.github(type="submit") Login with GitHub
+        form(action="/login/google", method="post")
+          button.login-button.google(type="submit") Login with Google
+        form(action="/login/guest", method="post")
+          button.login-button.guest(type="submit") Continue as Guest
