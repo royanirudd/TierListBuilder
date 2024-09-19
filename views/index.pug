@@ -17,27 +17,34 @@ html(lang="en")
       .container {
         text-align: center;
         background-color: white;
-        padding: 2rem;
+        padding: 3rem;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        width: 80%;
+        max-width: 500px;
       }
       h1 {
         color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
       }
       .login-options {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        align-items: center;
+        gap: 1.5rem;
         margin-top: 2rem;
       }
       .login-button {
-        padding: 0.5rem 1rem;
+        padding: 0.75rem 1.5rem;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-        width: 100%;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        width: 80%;
+        max-width: 300px;
+        text-decoration: none;
       }
       .github {
         background-color: #24292e;
@@ -53,18 +60,32 @@ html(lang="en")
       }
       .login-button:hover {
         opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      .user-info {
+        margin-top: 2rem;
+      }
+      .user-info a {
+        display: inline-block;
+        margin: 0.5rem 0;
+        color: #4285F4;
+        text-decoration: none;
+      }
+      .user-info a:hover {
+        text-decoration: underline;
       }
   body
     .container
       h1= title
       if user
-        p Welcome, #{user.name}!
-        a(href="/tierlist") Go to Tier List
-        br
-        a(href="/auth/logout") Logout
+        .user-info
+          p Welcome, #{user.name}!
+          a(href="/tierlist") Go to Tier List
+          br
+          a(href="/auth/logout") Logout
       else
         .login-options
           a.login-button.github(href="/auth/github") Login with GitHub
           a.login-button.google(href="/auth/google") Login with Google
-          form(action="/auth/guest", method="post")
-            button.login-button.guest(type="submit") Continue as Guest
+          a.login-button.guest(href="/tierlist?guest=true") Continue Without Logging in

@@ -47,6 +47,8 @@ app.get('/', (req, res) => {
 app.get('/tierlist', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('tierList', { user: req.user });
+  } else if (req.query.guest === 'true'){
+    res.render('tierList', { user: null });
   } else {
     res.redirect('/');
   }
