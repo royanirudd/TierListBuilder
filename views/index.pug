@@ -28,14 +28,14 @@ html(lang="en")
         font-size: 2.5rem;
         margin-bottom: 2rem;
       }
-      .login-options {
+      .login-options, .user-info {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
         margin-top: 2rem;
       }
-      .login-button {
+      .button {
         padding: 0.75rem 1.5rem;
         border: none;
         border-radius: 5px;
@@ -45,47 +45,43 @@ html(lang="en")
         width: 80%;
         max-width: 300px;
         text-decoration: none;
-      }
-      .github {
-        background-color: #24292e;
         color: white;
       }
-      .google {
-        background-color: #4285F4;
-        color: white;
-      }
-      .guest {
-        background-color: #34a853;
-        color: white;
-      }
-      .login-button:hover {
+      .button:hover {
         opacity: 0.9;
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       }
-      .user-info {
-        margin-top: 2rem;
+      .github {
+        background-color: #24292e;
       }
-      .user-info a {
-        display: inline-block;
-        margin: 0.5rem 0;
-        color: #4285F4;
-        text-decoration: none;
+      .google {
+        background-color: #4285F4;
       }
-      .user-info a:hover {
-        text-decoration: underline;
+      .guest {
+        background-color: #34a853;
+      }
+      .tierlist {
+        background-color: #4285F4;
+      }
+      .logout {
+        background-color: #DB4437;
+      }
+      .welcome-message {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        color: #333;
       }
   body
     .container
       h1= title
       if user
         .user-info
-          p Welcome, #{user.name}!
-          a(href="/tierlist") Go to Tier List
-          br
-          a(href="/auth/logout") Logout
+          p.welcome-message Welcome, #{user.name}!
+          a.button.tierlist(href="/tierlist") Go to Tier List
+          a.button.logout(href="/auth/logout") Logout
       else
         .login-options
-          a.login-button.github(href="/auth/github") Login with GitHub
-          a.login-button.google(href="/auth/google") Login with Google
-          a.login-button.guest(href="/tierlist?guest=true") Continue Without Logging in
+          a.button.github(href="/auth/github") Login with GitHub
+          a.button.google(href="/auth/google") Login with Google
+          a.button.guest(href="/tierlist?guest=true") Continue Without Logging in
