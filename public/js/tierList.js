@@ -34,6 +34,58 @@ const searchQueryInput = document.getElementById('searchQuery');
 const searchImagesBtn = document.getElementById('searchImages');
 const imageOptions = document.getElementById('imageOptions');
 
+const shareBtn = document.getElementById('share');
+const shareModal = document.getElementById('shareModal');
+const emailShareBtn = document.getElementById('emailShare');
+const forumShareBtn = document.getElementById('forumShare');
+const emailModal = document.getElementById('emailModal');
+const emailInput = document.getElementById('emailInput');
+const sendEmailBtn = document.getElementById('sendEmail');
+
+shareBtn.addEventListener('click', () => {
+  shareModal.style.display = "block";
+});
+
+emailShareBtn.addEventListener('click', () => {
+  shareModal.style.display = "none";
+  emailModal.style.display = "block";
+});
+
+forumShareBtn.addEventListener('click', () => {
+  // Placeholder for forum functionality
+  alert("Forum sharing functionality coming soon!");
+});
+
+sendEmailBtn.addEventListener('click', () => {
+  const email = emailInput.value;
+  if (email) {
+    // Capture the tier list as an image
+    html2canvas(document.querySelector('.tier-list')).then(canvas => {
+      const imageData = canvas.toDataURL('image/png');
+      
+      // Send the image data to the server
+      fetch('/share/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, imageData }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        emailModal.style.display = "none";
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while sending the email.');
+      });
+    });
+  } else {
+    alert('Please enter a valid email address.');
+  }
+});
+
 addItemBtn.onclick = () => {
   modal.style.display = "block";
 }

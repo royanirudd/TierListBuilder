@@ -52,6 +52,10 @@ app.get('/tierlist', (req, res) => {
   }
 });
 
+//Share routes
+const shareRoutes = require('./routes/share');
+app.use('/share', shareRoutes);
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

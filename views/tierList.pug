@@ -7,24 +7,36 @@ html(lang="en")
     link(rel="stylesheet", href="/css/tierList.css")
   body
     h1 Tier List Builder
+    p Welcome, #{user.name}!
     .tier-list
       each tier in ['S', 'A', 'B', 'C', 'D', 'E', 'F']
         .tier
-          .tier-label(class=`tier-label-${tier}`, data-original-name=tier)= tier
-          .tier-items(id=`tier-${tier}`, ondragover="allowDrop(event)", ondrop="drop(event)")
+          .tier-label(class=`tier-label-${tier}`)= tier
+          .tier-items(ondrop="drop(event)" ondragover="allowDrop(event)")
     .buttons
       button#addItem Add Item
       button#edit Edit
       button#export Export
-
+      button#share Share
     #addItemModal.modal
       .modal-content
         span.close &times;
-        h2 Add Item
-        input#itemName(type="text", placeholder="Item name")
-        input#searchQuery(type="text", placeholder="Search query")
+        h2 Add New Item
+        input#itemName(type="text", placeholder="Item Name")
+        input#searchQuery(type="text", placeholder="Search Query")
         button#searchImages Search Images
         #imageOptions
-
+    #shareModal.modal
+      .modal-content
+        span.close &times;
+        h2 Share Tier List
+        button#emailShare Email
+        button#forumShare Forum
+    #emailModal.modal
+      .modal-content
+        span.close &times;
+        h2 Share via Email
+        input#emailInput(type="email", placeholder="Enter recipient's email")
+        button#sendEmail Send
     script(src="https://html2canvas.hertzen.com/dist/html2canvas.min.js")
     script(src="/js/tierList.js")
