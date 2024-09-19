@@ -131,26 +131,37 @@ searchImagesBtn.onclick = () => {
 
 const editBtn = document.getElementById('edit');
 
-editBtn.addEventListener('click', () => {
-  editMode = !editMode;
-  editBtn.textContent = editMode ? 'Save' : 'Edit';
-  
+function enterEditMode() {
   const tierLabels = document.querySelectorAll('.tier-label');
   tierLabels.forEach(label => {
-    if (editMode) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.value = label.textContent;
-      input.className = 'edit-tier-name';
-      label.textContent = '';
-      label.appendChild(input);
-    } else {
-      const input = label.querySelector('input');
-      if (input) {
-        label.textContent = input.value;
-      }
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = label.textContent;
+    input.className = 'edit-tier-name';
+    label.textContent = '';
+    label.appendChild(input);
+  });
+  editBtn.textContent = 'Save Changes';
+}
+
+function exitEditMode() {
+  const tierLabels = document.querySelectorAll('.tier-label');
+  tierLabels.forEach(label => {
+    const input = label.querySelector('input');
+    if (input) {
+      label.textContent = input.value;
     }
   });
+  editBtn.textContent = 'Edit';
+}
+
+editBtn.addEventListener('click', () => {
+  editMode = !editMode;
+  if (editMode) {
+    enterEditMode();
+  } else {
+    exitEditMode();
+  }
 });
 
 const exportBtn = document.getElementById('export');
@@ -179,33 +190,10 @@ exportBtn.addEventListener('click', exportTierList);
 
 document.addEventListener('DOMContentLoaded', () => {
   const addItemBtn = document.getElementById('addItem');
-  const editBtn = document.getElementById('edit');
   const exportBtn = document.getElementById('export');
 
   addItemBtn.addEventListener('click', () => {
     modal.style.display = "block";
-  });
-
-  editBtn.addEventListener('click', () => {
-    editMode = !editMode;
-    editBtn.textContent = editMode ? 'Save' : 'Edit';
-    
-    const tierLabels = document.querySelectorAll('.tier-label');
-    tierLabels.forEach(label => {
-      if (editMode) {
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = label.textContent;
-        input.className = 'edit-tier-name';
-        label.textContent = '';
-        label.appendChild(input);
-      } else {
-        const input = label.querySelector('input');
-        if (input) {
-          label.textContent = input.value;
-        }
-      }
-    });
   });
 
   exportBtn.addEventListener('click', exportTierList);
