@@ -97,3 +97,4 @@ ehthumbs.db
 
 # Vim swap files
 *.swp
+.env

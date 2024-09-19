@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const passport = require('passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 
 const app = express();
-
-app.use(express.static('public'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -21,26 +22,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Import and use auth routes
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
 // Routes
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Tier-List Builder' });
+  res.render('index', { title: 'Tier-List Builder', user: req.user });
 });
 
 app.get('/tierlist', (req, res) => {
-  res.render('tierList');
-});
-
-// Login routes (placeholders for now)
-app.post('/login/github', (req, res) => {
-  res.redirect('/tierlist');
-});
-
-app.post('/login/google', (req, res) => {
-  res.redirect('/tierlist');
-});
-
-app.post('/login/guest', (req, res) => {
-  res.redirect('/tierlist');
+  if (req.isAuthenticated()) {
+    res.render('tierList', { user: req.user });
+  } else {
+    res.redirect('/');
+  }
 });
 
 // Start server

@@ -57,10 +57,14 @@ html(lang="en")
   body
     .container
       h1= title
-      .login-options
-        form(action="/login/github", method="post")
-          button.login-button.github(type="submit") Login with GitHub
-        form(action="/login/google", method="post")
-          button.login-button.google(type="submit") Login with Google
-        form(action="/login/guest", method="post")
-          button.login-button.guest(type="submit") Continue as Guest
+      if user
+        p Welcome, #{user.name}!
+        a(href="/tierlist") Go to Tier List
+        br
+        a(href="/auth/logout") Logout
+      else
+        .login-options
+          a.login-button.github(href="/auth/github") Login with GitHub
+          a.login-button.google(href="/auth/google") Login with Google
+          form(action="/auth/guest", method="post")
+            button.login-button.guest(type="submit") Continue as Guest
