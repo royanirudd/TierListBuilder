@@ -109,24 +109,30 @@ addItemBtn.onclick = () => {
 }
 
 searchImagesBtn.onclick = () => {
-  // Implement image search functionality here
-  // For now, we'll use placeholder images
-  const placeholderImages = [
-    'https://via.placeholder.com/50x50?text=1',
-    'https://via.placeholder.com/50x50?text=2',
-    'https://via.placeholder.com/50x50?text=3'
-  ];
-  
-  imageOptions.innerHTML = '';
-  placeholderImages.forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.onclick = () => {
-      addItem(itemNameInput.value, src);
-      closeAllModals();
-    }
-    imageOptions.appendChild(img);
-  });
+  const query = searchQueryInput.value;
+  if (!query) {
+    alert('Please enter a search query');
+    return;
+  }
+
+  fetch(`/search-images?query=${encodeURIComponent(query)}`)
+    .then(response => response.json())
+    .then(data => {
+      imageOptions.innerHTML = '';
+      data.results.forEach(image => {
+        const img = document.createElement('img');
+        img.src = image.urls.thumb;
+        img.onclick = () => {
+          addItem(itemNameInput.value || query, image.urls.regular);
+          closeAllModals();
+        }
+        imageOptions.appendChild(img);
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while searching for images.');
+    });
 }
 
 const editBtn = document.getElementById('edit');

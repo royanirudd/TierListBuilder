@@ -54,6 +54,31 @@ app.get('/tierlist', (req, res) => {
   }
 });
 
+//Image search routes
+const axios = require('axios');
+
+app.get('/search-images', async (req, res) => {
+  const query = req.query.query;
+  const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
+
+  try {
+    const response = await axios.get('https://api.unsplash.com/search/photos', {
+      params: {
+        query: query,
+        per_page: 9,
+      },
+      headers: {
+        Authorization: `Client-ID ${unsplashAccessKey}`,
+      },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error searching Unsplash:', error);
+    res.status(500).json({ error: 'An error occurred while searching for images' });
+  }
+});
+
 //Share routes
 const shareRoutes = require('./routes/share');
 app.use('/share', shareRoutes);
