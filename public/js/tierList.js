@@ -42,6 +42,24 @@ const emailModal = document.getElementById('emailModal');
 const emailInput = document.getElementById('emailInput');
 const sendEmailBtn = document.getElementById('sendEmail');
 
+// Function to close all modals
+function closeAllModals() {
+  const modals = [modal, shareModal, emailModal];
+  modals.forEach(m => m.style.display = "none");
+}
+
+// Event listener for all close buttons
+document.querySelectorAll('.close').forEach(closeBtn => {
+  closeBtn.addEventListener('click', closeAllModals);
+});
+
+// Event listener for clicking outside the modal
+window.addEventListener('click', (event) => {
+  if (event.target.classList.contains('modal')) {
+    closeAllModals();
+  }
+});
+
 shareBtn.addEventListener('click', () => {
   shareModal.style.display = "block";
 });
@@ -74,7 +92,7 @@ sendEmailBtn.addEventListener('click', () => {
       .then(response => response.json())
       .then(data => {
         alert(data.message);
-        emailModal.style.display = "none";
+        closeAllModals();
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -88,16 +106,6 @@ sendEmailBtn.addEventListener('click', () => {
 
 addItemBtn.onclick = () => {
   modal.style.display = "block";
-}
-
-closeBtn.onclick = () => {
-  modal.style.display = "none";
-}
-
-window.onclick = (event) => {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
 }
 
 searchImagesBtn.onclick = () => {
@@ -115,7 +123,7 @@ searchImagesBtn.onclick = () => {
     img.src = src;
     img.onclick = () => {
       addItem(itemNameInput.value, src);
-      modal.style.display = "none";
+      closeAllModals();
     }
     imageOptions.appendChild(img);
   });
